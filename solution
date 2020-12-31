@@ -1,0 +1,27 @@
+with open("libro.txt","r", encoding='utf-8') as file:
+    libro = file.read()
+with open("discard_es.txt","r", encoding='utf-8') as file:
+    quitarlista = file.read()
+quitar = quitarlista.split()
+import unicodedata
+
+palabra = ""
+diccionarioPalabras = {}
+for caracter in libro:
+    if unicodedata.category(caracter).startswith("L") == True:
+        palabra = palabra + caracter.lower()
+    elif palabra != "":
+        if diccionarioPalabras.get(palabra) == None and palabra not in quitar:
+            diccionarioPalabras[palabra] = 1
+        elif palabra not in quitar:
+            diccionarioPalabras[palabra] = diccionarioPalabras[palabra] + 1
+        palabra = ""
+
+def ordenaDicFrec(dicFrec):
+    aux = [(dicFrec[key], key) for key in dicFrec]
+    aux.sort()
+    aux.reverse()
+    return aux
+
+diccionarioOrdenado = ordenaDicFrec(diccionarioPalabras)
+print(diccionarioOrdenado)
